@@ -68,6 +68,3 @@ while continue_reading:
         rfidData.commit() # connection for COMMIT
 
     time.sleep(1)
-
-
-
