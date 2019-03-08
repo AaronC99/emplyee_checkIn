@@ -46,7 +46,7 @@ while continue_reading:
     # If we have the UID, continue
     if status == MIFAREReader.MI_OK:
         
-        rfid_access.execute("INSERT INTO attendance(employeeID,clockIn) VALUES ((SELECT employee_uid FROM employee where card_uid = ?) , datetime('now','localtime'))",[card_uid])
+        rfid_access.execute("INSERT INTO attendance(employeeID,clockIn) VALUES ((SELECT employee_uid FROM employee where card_uid = ?) , time('now','localtime'))",[card_uid])
         rfidData.commit() # connection for COMMIT
     
     time.sleep(1)
