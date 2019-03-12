@@ -47,14 +47,14 @@ while continue_reading:
     # If we have the UID, continue
     if status == MIFAREReader.MI_OK:
 
-        for row in rfid_access.execute("SELECT empName, username, card_uid, registeredDate FROM employee WHERE card_uid = ?", (card_uid,)):
+        for row in rfid_access.execute("SELECT employeeName, username, card_uid, registeredDate FROM employee WHERE card_uid = ?", (card_uid,)):
             name, username, card_uid, registeredDate = row
             print ("Card UID: " + card_uid)
             print ("Registered on: "+ registeredDate)
             if username == None:
                 name = input('Enter Name: ')
                 username = input('Enter Domain ID: ')
-                rfid_access.execute("UPDATE employee SET empName = ?, username = ? where card_uid = ?",([name, username,card_uid]))
+                rfid_access.execute("UPDATE employee SET employeeName = ?, username = ? where card_uid = ?",([name, username,card_uid]))
                 print (name+" is registered under "+username)
                 rfid_access.execute("UPDATE employee SET registeredDate = datetime('now','localtime') WHERE card_uid = ?", (card_uid,))
             else:
