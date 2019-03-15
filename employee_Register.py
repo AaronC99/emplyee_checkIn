@@ -55,7 +55,7 @@ while continue_reading:
                 name = input('Enter Name: ')
                 username = input('Enter Domain ID: ')
                 rfid_access.execute("UPDATE employee SET employeeName = ?, username = ? where card_uid = ?",([name, username,card_uid]))
-                print (name+" is registered under "+username)
+                print (name+" is registered as "+username)
                 rfid_access.execute("UPDATE employee SET registeredDate = datetime('now','localtime') WHERE card_uid = ?", (card_uid,))
             else:
                 print ("Welcome "+username)
