@@ -50,6 +50,6 @@ while continue_reading:
             
         except sql.IntegrityError:
             print ("You already Clock In.")
-    rfidData.commit() # connection for COMMIT
+        rfidData.commit() # connection for COMMIT
     
     time.sleep(1)
