@@ -45,11 +45,15 @@ while continue_reading:
 
     # If we have the UID, continue
     if status == MIFAREReader.MI_OK:
-        try:
-            rfid_access.execute("INSERT INTO attendance(employeeID,clockIn,lateness) VALUES ((SELECT employee_uid FROM employee where card_uid = ?) , strftime('%H:%M','now','localtime'),(strftime('%H','now','localtime') - strftime('%H','09:00'))|| ':' || (strftime('%M','now','localtime') - strftime('%M','09:00')) )",[card_uid])
-            
-        except sql.IntegrityError:
-            print ("You already Clock In.")
+
+        for row in rfid_access.execute("SELECT employeeID FROM attendance WHERE employeeID = ?", (employeeID)):
+            employeeID = row
+            if employeeID == None:
+                rfid_access.execute("INSERT INTO attendance(employeeID,clockIn,lateness) VALUES ((SELECT employee_uid FROM employee where card_uid = ?) , strftime('%H:%M','now','localtime'),(strftime('%H','now','localtime') - strftime('%H','09:00'))|| ':' || (strftime('%M','now','localtime') - strftime('%M','09:00')) )",[card_uid])
+            else:
+                print ("Welcome!! You have already clock in")
+            break
+
         rfidData.commit() # connection for COMMIT
     
     time.sleep(1)
