@@ -50,7 +50,7 @@ while continue_reading:
         # EMPLOYEE ON EMPLOYEE.ID = attendance.employeeID
         # WHERE EMPLOYEE.CARDNUMBER = ? AND attendance.clockInDATE = ?
         todayDate = datetime.date.today() 
-        for row in rfid_access.execute("SELECT employeeID, date FROM attendance INNER JOIN EMPLOYEE ON EMPLOYEE.employee_uid= attendance.employeeID WHERE EMPLOYEE.card_uid = ? AND attendance.date = ?",[card_uid,date] ):
+        for row in rfid_access.execute("SELECT employeeID, date FROM attendance INNER JOIN EMPLOYEE ON EMPLOYEE.employee_uid= attendance.employeeID WHERE EMPLOYEE.card_uid = ? AND attendance.date = ?",([card_uid],date,)):
             employeeID, date  = row
             print (row)
             if employeeID != None and date != todayDate:
