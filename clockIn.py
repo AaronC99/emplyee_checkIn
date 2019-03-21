@@ -54,11 +54,12 @@ while continue_reading:
             employeeID, date  = row
             if employeeID != None and date != todayDate:
                 rfid_access.execute("INSERT INTO attendance(employeeID,clockIn,lateness,date) VALUES ((SELECT employee_uid FROM employee where card_uid = ?) , strftime('%H:%M','now','localtime'),(strftime('%H','now','localtime') - strftime('%H','09:00'))|| ':' || (strftime('%M','now','localtime') - strftime('%M','09:00')),date('now','localtime') )",[card_uid])
-                return (employeeID + "has clocked in.")
+                rfidData.commit() # connection for COMMIT
+                print ( "Employee ID: ", employeeID ," has clocked in.")
             else:
                 print ("Welcome!! You have already clock in")
+
         break
 
-    rfidData.commit() # connection for COMMIT
     
     time.sleep(1)
