@@ -52,9 +52,9 @@ while continue_reading:
         todayDate = datetime.date.today() 
         for row in rfid_access.execute("SELECT employeeID, date FROM attendance INNER JOIN EMPLOYEE ON EMPLOYEE.employee_uid= attendance.employeeID WHERE EMPLOYEE.card_uid = ?",(card_uid,)):
             employeeID, date  = row
-            if employeeID != None & date != todayDate:
+            if employeeID != None and date != todayDate:
                 rfid_access.execute("INSERT INTO attendance(employeeID,clockIn,lateness,date) VALUES ((SELECT employee_uid FROM employee where card_uid = ?) , strftime('%H:%M','now','localtime'),(strftime('%H','now','localtime') - strftime('%H','09:00'))|| ':' || (strftime('%M','now','localtime') - strftime('%M','09:00')),date('now','localtime') )",[card_uid])
-                print(employeeID + "has clocked in.")
+                return (employeeID + "has clocked in.")
             else:
                 print ("Welcome!! You have already clock in")
         break
