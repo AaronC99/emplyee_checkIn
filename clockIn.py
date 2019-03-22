@@ -50,15 +50,18 @@ while continue_reading:
         # EMPLOYEE ON EMPLOYEE.ID = attendance.employeeID
         # WHERE EMPLOYEE.CARDNUMBER = ? AND attendance.clockInDATE = ?
         todayDate = datetime.date.today() 
-        for row in rfid_access.execute("SELECT employeeID, date FROM attendance INNER JOIN EMPLOYEE ON EMPLOYEE.employee_uid= attendance.employeeID WHERE EMPLOYEE.card_uid = ? AND attendance.date = ?",([card_uid],date,)):
+        for row in rfid_access.execute("SELECT employeeID, date FROM attendance INNER JOIN EMPLOYEE ON EMPLOYEE.employee_uid= attendance.employeeID WHERE employee.card_uid = ? AND date IS NOT NULL",[card_uid,]):
             employeeID, date  = row
             print (row)
-            if employeeID != None and date != todayDate:
+            print (todayDate)
+            if employeeID != None and date == todayDate:
                 rfid_access.execute("INSERT INTO attendance(employeeID,clockIn,lateness,date) VALUES ((SELECT employee_uid FROM employee where card_uid = ?) , strftime('%H:%M','now','localtime'),(strftime('%H','now','localtime') - strftime('%H','09:00'))|| ':' || (strftime('%M','now','localtime') - strftime('%M','09:00')),date('now','localtime') )",[card_uid])
                 rfidData.commit() # connection for COMMIT
-                print ( "Employee ID: ", employeeID ," has clocked in.")
+                print ( "Employee ID: ", employeeID ," has clocked in. ",date)
+                break
             else:
                 print ("Welcome!! You have already clock in")
+                break
 
     
     time.sleep(1)
